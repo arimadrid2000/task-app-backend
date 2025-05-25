@@ -34,13 +34,19 @@ jobs:
     - name: Build backend
       run: npm run build
 
-    - name: Debug DOCKER secrets
+    - name: Debug DOCKER secrets (borrar luego)
       run: |
-        echo "DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} | empty"
-        echo "DOCKER_PASSWORD length=${{ secrets.DOCKER_PASSWORD }} | Hidden for security"
+        if [ -z "$DOCKER_USERNAME" ]; then echo "❌ DOCKER_USERNAME is empty"; else echo "✅ DOCKER_USERNAME is set"; fi
+        if [ -z "$DOCKER_PASSWORD" ]; then echo "❌ DOCKER_PASSWORD is empty"; else echo "✅ DOCKER_PASSWORD is set"; fi
+      env:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
     - name: Docker login
-      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+      run: echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+      env:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
     - name: Build Docker image
       run: docker build -t ${{ secrets.DOCKER_USERNAME }}/task-backend . --build-arg GOOGLE_CREDENTIALS_B64="${{ secrets.SERVICE_ACCOUNT_KEY_B64 }}"
