@@ -34,14 +34,6 @@ jobs:
     - name: Build backend
       run: npm run build
 
-    - name: Debug DOCKER secrets (borrar luego)
-      run: |
-        if [ -z "$DOCKER_USERNAME" ]; then echo "❌ DOCKER_USERNAME is empty"; else echo "✅ DOCKER_USERNAME is set"; fi
-        if [ -z "$DOCKER_PASSWORD" ]; then echo "❌ DOCKER_PASSWORD is empty"; else echo "✅ DOCKER_PASSWORD is set"; fi
-      env:
-        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-
     - name: Docker login
       run: echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
       env:
