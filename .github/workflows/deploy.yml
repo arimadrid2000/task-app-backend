@@ -26,6 +26,12 @@ jobs:
     - name: Install dependencies
       run: npm install
 
+    - name: Reconstituir archivo serviceAccountKey.json
+      run: |
+        echo $SERVICE_ACCOUNT_KEY_B64 | base64 -d > ./config/serviceAccountKey.json
+      env:
+        SERVICE_ACCOUNT_KEY_B64: ${{ secrets.SERVICE_ACCOUNT_KEY_B64 }}
+
     - name: Build backend
       run: npm run build
 
