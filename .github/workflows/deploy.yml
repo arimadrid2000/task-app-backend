@@ -20,15 +20,14 @@ jobs:
       with:
         node-version: '18'
 
-    - name: Decode Firebase Key
-      run: echo "$GOOGLE_CREDENTIALS_B64" | base64 -d > serviceAccountKey.json
-
-    - name: Install dependencies
+    - name: Instalar dependencias
       run: npm install
 
+    - name: Crear carpeta config
+      run: mkdir -p ./config
+
     - name: Reconstituir archivo serviceAccountKey.json
-      run: |
-        echo $SERVICE_ACCOUNT_KEY_B64 | base64 -d > ./config/serviceAccountKey.json
+      run: echo "$SERVICE_ACCOUNT_KEY_B64" | base64 -d > ./config/serviceAccountKey.json
       env:
         SERVICE_ACCOUNT_KEY_B64: ${{ secrets.SERVICE_ACCOUNT_KEY_B64 }}
 
@@ -39,7 +38,7 @@ jobs:
       run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
     - name: Build Docker image
-      run: docker build -t ${{ secrets.DOCKER_USERNAME }}/task-backend .
+      run: docker build -t ${{ secrets.DOCKER_USERNAME }}/task-backend . --build-arg GOOGLE_CREDENTIALS_B64="${{ secrets.SERVICE_ACCOUNT_KEY_B64 }}"
 
     - name: Push Docker image
       run: docker push ${{ secrets.DOCKER_USERNAME }}/task-backend

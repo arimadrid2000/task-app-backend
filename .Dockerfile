@@ -16,12 +16,14 @@ COPY . .
 # Construir TypeScript (si usas TS)
 RUN npm run build
 
-# Añadir variable para Firebase
-ARG GOOGLE_CREDENTIALS_B64
-ENV GOOGLE_APPLICATION_CREDENTIALS=/config/serviceAccountKey.json
+# Crear carpeta para la credencial
+RUN mkdir -p /config
 
-# Decodificar la clave desde Base64
+# Decodificar la clave desde Base64 (argumento pasado desde GitHub Actions)
+ARG GOOGLE_CREDENTIALS_B64
 RUN echo "$GOOGLE_CREDENTIALS_B64" | base64 -d > /config/serviceAccountKey.json
+
+ENV GOOGLE_APPLICATION_CREDENTIALS=/config/serviceAccountKey.json
 
 # Exponer el puerto (ajusta si usas otro)
 EXPOSE 3000
