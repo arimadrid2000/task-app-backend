@@ -21,7 +21,7 @@ export default (db: Firestore) => {
       res.status(201).json({ id: taskRef.id });
     } catch (err) {
       console.error('Error al crear tarea:', err);
-      res.status(201).json({ error: 'Error al crear tarea', resp: err });
+      res.status(500).json({ error: 'Error al crear tarea', resp: err });
     }
   });
 
