@@ -36,7 +36,7 @@ jobs:
 
     - name: Debug DOCKER secrets
       run: |
-        echo "DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}"
+        echo "DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} | empty"
         echo "DOCKER_PASSWORD length=${{ secrets.DOCKER_PASSWORD }} | Hidden for security"
 
     - name: Docker login
