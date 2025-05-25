@@ -26,15 +26,24 @@ export default (db: Firestore) => {
   router.post('/login', async (req, res) => {
     const { email } = req.body;
     try {
-      const userRef = db.collection('users').doc(email);
-      const doc = await userRef.get();
+          const snapshot = await db
+      .collection('users')
+      .where('email', '==', email)
+      .limit(1)
+      .get();
 
-      if (!doc.exists) {
-        res.status(404).json({ error: 'Usuario no encontrado' });
-        return;
-      }
+        console.log('📦 Snapshot size:', snapshot.size);
 
-      res.status(200).json({ id: doc.id, ...doc.data() });
+        if (snapshot.empty) {
+            console.log('⚠️ Usuario no encontrado para email:', email);
+            res.status(404).json({ error: 'Usuario no encontrado' });
+            return;
+        }
+
+        const doc = snapshot.docs[0];
+        console.log('✅ Usuario encontrado:', doc.id, doc.data());
+
+        res.status(200).json({ id: doc.id, ...doc.data() });
     } catch (err) {
       console.error('🔥 Error al iniciar sesión:', err);
       res.status(500).json({ error: 'Error al iniciar sesión' });
