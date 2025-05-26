@@ -1,4 +1,6 @@
-name: Deploy Backend to Docker Hub and Firebase Hosting
+
+
+name: Deploy Backend Functions to Firebase
 
 on:
   push:
@@ -8,46 +10,29 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    env:
-      GOOGLE_CREDENTIALS_B64: ${{ secrets.GOOGLE_CREDENTIALS_B64 }}
 
     steps:
-    - name: Checkout repo
+    - name: Checkout repository
       uses: actions/checkout@v3
 
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '18'
+        node-version: '20'
 
-    - name: Instalar dependencias
-      run: npm install
+    - name: Install function dependencies
+    
+    
+    
+      run: cd functions && npm install
 
-    - name: Crear carpeta config
-      run: mkdir -p ./config
-
-    - name: Reconstituir archivo serviceAccountKey.json
-      run: echo "$SERVICE_ACCOUNT_KEY_B64" | base64 -d > ./config/serviceAccountKey.json
-      env:
-        SERVICE_ACCOUNT_KEY_B64: ${{ secrets.SERVICE_ACCOUNT_KEY_B64 }}
-
-    - name: Build backend
-      run: npm run build
-
-    - name: Docker login
-      run: echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-      env:
-        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-
-    - name: Build Docker image
-      run: docker build -t ${{ secrets.DOCKER_USERNAME }}/task-backend . --build-arg GOOGLE_CREDENTIALS_B64="${{ secrets.SERVICE_ACCOUNT_KEY_B64 }}"
-
-    - name: Push Docker image
-      run: docker push ${{ secrets.DOCKER_USERNAME }}/task-backend
+    - name: Build backend (Cloud Functions)
+    
+      run: cd functions && npm run build
 
     - name: Install Firebase CLI
       run: npm install -g firebase-tools
 
-    - name: Deploy to Firebase Hosting
-      run: firebase deploy --token "${{ secrets.FIREBASE_TOKEN }}" --project task-app-293dd
+    - name: Deploy Firebase Cloud Functions
+    
+      run: firebase deploy --only functions --token "${{ secrets.FIREBASE_TOKEN }}" --project task-app-293dd
