@@ -9,12 +9,12 @@ export interface DecodedTokenPayload {
   exp?: number;
 }
 
-const JWT_SECRET = "mi-secreto-super-seguro-para-desarrollo-local-987654321";
+const JWT_SECRET = process.env.JWT_SECRET || "mi-secreto-super-seguro-para-desarrollo-local-987654321";
 
 export class AuthService {
   constructor(private userRepository: IUserRepository) {}
 
-  async registerUser(userData: User): Promise<{ user: User; token: string } | null> {
+  async registerUser(userData: Omit<User, 'id'>): Promise<{ user: User; token: string } | null> {
     const existingUser = await this.userRepository.findByEmail(userData.email);
     if (existingUser) {
       return null;
@@ -23,6 +23,8 @@ export class AuthService {
 
     const newUser = {...userData, createdAt: new Date()};
     const createdUser = await this.userRepository.create(newUser);
+
+    console.log(`usuario creado: ${createdUser}`)
 
     if (createdUser) {
       const token = jwt.sign({id: createdUser.id || createdUser.email, email: createdUser.email}, JWT_SECRET, {expiresIn: "1h"});
@@ -47,8 +49,7 @@ export class AuthService {
 
   verifyToken(token: string): DecodedTokenPayload | null {
     try {
-      const secret = process.env.JWT_SECRET || "your_default_secret_key_for_development";
-      const decoded = jwt.verify(token, secret) as DecodedTokenPayload;
+      const decoded = jwt.verify(token, JWT_SECRET) as DecodedTokenPayload;
       return decoded;
     } catch (error) {
       console.error("Error al verificar el token:", error);
