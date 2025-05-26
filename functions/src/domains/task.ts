@@ -3,6 +3,6 @@ export interface Task {
   userId: string;
   title: string;
   description?: string;
-  status: 'pendiente' | 'completada';
+  status: "pendiente" | "completada";
   createdAt?: Date;
 }

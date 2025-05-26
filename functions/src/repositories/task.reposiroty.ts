@@ -1,5 +1,5 @@
-import { Firestore } from 'firebase-admin/firestore';
-import { Task } from '../domains/task'; 
+import {Firestore} from "firebase-admin/firestore";
+import {Task} from "../domains/task";
 
 
 export interface ITaskRepository {
@@ -14,28 +14,28 @@ export class FirebaseTaskRepository implements ITaskRepository {
   constructor(private db: Firestore) {}
 
   async create(task: Task): Promise<Task> {
-    const taskRef = await this.db.collection('tasks').add({
+    const taskRef = await this.db.collection("tasks").add({
       ...task,
-      createdAt: new Date()
+      createdAt: new Date(),
     });
-    return { id: taskRef.id, ...task };
+    return {id: taskRef.id, ...task};
   }
 
   async findByUserId(userId: string): Promise<Task[]> {
     const snapshot = await this.db
-      .collection('tasks')
-      .where('userId', '==', userId)
-      .orderBy('createdAt', 'desc')
-      .get();
+        .collection("tasks")
+        .where("userId", "==", userId)
+        .orderBy("createdAt", "desc")
+        .get();
 
-    return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as Task[];
+    return snapshot.docs.map((doc) => ({id: doc.id, ...doc.data()})) as Task[];
   }
 
   async update(taskId: string, updates: Partial<Task>): Promise<void> {
-    await this.db.collection('tasks').doc(taskId).update(updates);
+    await this.db.collection("tasks").doc(taskId).update(updates);
   }
 
   async delete(taskId: string): Promise<void> {
-    await this.db.collection('tasks').doc(taskId).delete();
+    await this.db.collection("tasks").doc(taskId).delete();
   }
 }

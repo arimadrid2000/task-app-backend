@@ -17,9 +17,6 @@ module.exports = {
     project: ["tsconfig.json", "tsconfig.dev.json"],
     sourceType: "module",
   },
-  ignorePatterns: [
-    "/lib/**/*", // Ignore built files.
-  ],
   plugins: [
     "@typescript-eslint",
     "import",
@@ -27,5 +24,13 @@ module.exports = {
   rules: {
     "quotes": ["error", "double"],
     "import/no-unresolved": 0,
+    "max-len": ["error", {code: 120, ignoreUrls: true, ignoreStrings: true}],
+    "new-cap": "off",
+    "require-jsdoc": "off",
   },
+  ignorePatterns: [
+    "lib/**/*",
+    "*.d.ts",
+    "clean.js",
+  ],
 };
