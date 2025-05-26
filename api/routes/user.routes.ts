@@ -14,8 +14,7 @@ export default (authService: AuthService) => {
         return;
       }
       res.status(201).json({
-        id: result.user.email,
-        message: "Usuario registrado exitosamente",
+        user: result.user,
         token: result.token,
       });
     } catch (err) {

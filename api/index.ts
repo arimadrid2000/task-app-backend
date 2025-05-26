@@ -11,9 +11,26 @@ import {FirebaseTaskRepository} from "./repositories/task.reposiroty";
 import {AuthService} from "./services/auth.service";
 import {TaskService} from "./services/task.service";
 
-if (admin.apps.length === 0) {
-  admin.initializeApp();
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config({ path: '../.env' });
 }
+
+const serviceAccount = {
+  projectId: process.env.FIREBASE_PROJECT_ID,
+
+  privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+  clientEmail: process.env.FIREBASE_CLIENT_EMAIL
+};
+
+if (serviceAccount.projectId && serviceAccount.privateKey && serviceAccount.clientEmail) {
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount)
+  });
+  console.log("Firebase Admin SDK inicializado correctamente.");
+} else {
+  console.warn("Firebase Admin SDK NO inicializado. Verifique las variables de entorno.");
+}
+
 const db = admin.firestore();
 
 const userRepository = new FirebaseUserRepository(db);

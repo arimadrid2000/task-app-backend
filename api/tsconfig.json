@@ -1,17 +1,15 @@
 {
   "compilerOptions": {
+    "target": "es2018",
     "module": "commonjs",
-    "noImplicitReturns": true,
-    "noUnusedLocals": true,
-    "outDir": "lib",
-    "sourceMap": true,
-    "strict": true, 
-    "target": "es2017",
-    "esModuleInterop": true, 
-    "skipLibCheck": true 
+    "lib": ["es2018"],
+    "outDir": "./dist",
+    "rootDir": "./",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
   },
-  "compileOnSave": true,
-  "include": [
-    "src"
-, "services", "routes", "repositories", "domains"  ]
+  "include": ["./**/*.ts"],
+  "exclude": ["node_modules"]
 }
