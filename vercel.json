@@ -10,10 +10,5 @@
     "env": {
       "NODE_ENV": "production"
     }
-  },
-  "functions": {
-    "api/index.ts": { 
-      "runtime": "node20.x" 
-    }
   }
 }
