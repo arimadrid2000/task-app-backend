@@ -13,7 +13,7 @@
   },
   "functions": {
     "api/index.ts": { 
-      "runtime": "nodejs18.x" 
+      "runtime": "node18.x" 
     }
   }
 }
