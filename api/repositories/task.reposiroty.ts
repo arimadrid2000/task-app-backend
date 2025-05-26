@@ -1,14 +1,12 @@
 import {Firestore} from "firebase-admin/firestore";
 import {Task} from "../domains/task";
 
-
 export interface ITaskRepository {
   create(task: Task): Promise<Task>;
   findByUserId(userId: string): Promise<Task[]>;
   update(taskId: string, updates: Partial<Task>): Promise<void>;
   delete(taskId: string): Promise<void>;
 }
-
 
 export class FirebaseTaskRepository implements ITaskRepository {
   constructor(private db: Firestore) {}
@@ -28,6 +26,7 @@ export class FirebaseTaskRepository implements ITaskRepository {
         .orderBy("createdAt", "desc")
         .get();
 
+  
     return snapshot.docs.map((doc) => ({id: doc.id, ...doc.data()})) as Task[];
   }
 
