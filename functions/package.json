@@ -21,29 +21,30 @@
     "express": "^4.19.2",
     "firebase-admin": "^11.11.0",
     "firebase-functions": "^5.0.0",
-    "jsonwebtoken": "^9.0.2"
+    "jsonwebtoken": "^9.0.2",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
     "@types/jsonwebtoken": "^9.0.6",
+    "@types/uuid": "^10.0.0",
     "@typescript-eslint/eslint-plugin": "^6.x.x",
     "@typescript-eslint/parser": "^6.x.x",
     "eslint": "^8.57.0",
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-import": "^2.29.1",
     "firebase-functions-test": "^3.1.0",
-    "typescript": "^5.0.0",
-    "rimraf": "^5.0.0"
+    "rimraf": "^5.0.0",
+    "typescript": "^5.0.0"
   },
   "private": true,
-  "overrides": { 
-    "glob": "10.3.10", 
-    "minimatch": "9.0.4", 
-    "@types/glob": "8.1.0", 
+  "overrides": {
+    "glob": "10.3.10",
+    "minimatch": "9.0.4",
+    "@types/glob": "8.1.0",
     "@types/minimatch": "3.0.5",
     "rimraf": "^5.0.0"
   }
-
 }

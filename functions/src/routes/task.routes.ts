@@ -28,10 +28,10 @@ export const authenticateToken = (authService: AuthService) => (req: Request, re
 };
 
 
-export default (taskService: TaskService) => {
+export default (taskService: TaskService, authService: AuthService) => {
   const router = Router();
-
-
+  const authMiddleware = authenticateToken(authService);
+  router.use(authMiddleware); 
   router.post("/", async (req, res) => {
     if (!req.user || !req.user.id) {
       res.status(401).json({error: "Usuario no autenticado para crear tarea."});

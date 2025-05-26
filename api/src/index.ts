@@ -3,13 +3,13 @@ import express from "express";
 import cors from "cors";
 import * as admin from "firebase-admin";
 
-import userRoutes from "./routes/user.routes";
-import taskRoutes, {authenticateToken} from "./routes/task.routes";
+import userRoutes from "../routes/user.routes";
+import taskRoutes, {authenticateToken} from "../routes/task.routes";
 
-import {FirebaseUserRepository} from "./repositories/user.repository";
-import {FirebaseTaskRepository} from "./repositories/task.reposiroty";
-import {AuthService} from "./services/auth.service";
-import {TaskService} from "./services/task.service";
+import {FirebaseUserRepository} from "../repositories/user.repository";
+import {FirebaseTaskRepository} from "../repositories/task.reposiroty";
+import {AuthService} from "../services/auth.service";
+import {TaskService} from "../services/task.service";
 
 if (admin.apps.length === 0) {
   admin.initializeApp();

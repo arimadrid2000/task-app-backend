@@ -1,17 +1,17 @@
-import {Firestore} from "firebase-admin/firestore";
+import {Firestore, Timestamp} from "firebase-admin/firestore";
 import {User} from "../domains/user";
+import { v4 as uuidv4 } from 'uuid';
 
 export interface IUserRepository {
   findByEmail(email: string): Promise<User | null>;
-  create(user: User): Promise<User>;
+  create(user: Omit<User, 'id'>): Promise<User>;
 }
 
 export class FirebaseUserRepository implements IUserRepository {
   constructor(private db: Firestore) {}
 
   async findByEmail(email: string): Promise<User | null> {
-    console.log("Buscando usuario con email:", email);
-    const usersRef = this.db.collection("users");
+      const usersRef = this.db.collection("users");
     const snapshot = await usersRef.where("email", "==", email).limit(1).get();
 
     if (snapshot.empty) {
@@ -21,13 +21,27 @@ export class FirebaseUserRepository implements IUserRepository {
 
     const userData = snapshot.docs[0].data();
     const userId = snapshot.docs[0].id;
-    console.log("Usuario encontrado:", userId, userData);
-    return {id: userId, ...userData} as User;
+
+    
+    if (userData.createdAt instanceof Timestamp) {
+      userData.createdAt = userData.createdAt.toDate();
+    }
+
+    
+    const { hashedPassword, ...userWithoutHash } = userData; 
+    return {id: userId, ...userWithoutHash} as User;
   }
 
-  async create(user: User): Promise<User> {
-    const userRef = this.db.collection("users").doc(user.email);
-    await userRef.set(user);
-    return {id: user.email, ...user};
+  async create(user: Omit<User, 'id'>): Promise<User> {
+    const newUserId = uuidv4(); 
+    const newUserWithId: User = {id: newUserId, ...user, createdAt: new Date()}; 
+
+    console.log(newUserWithId)
+    const userRef = this.db.collection("users").doc(newUserId);
+    await userRef.set(newUserWithId); 
+
+    
+    const { ...userWithoutHash } = newUserWithId;
+    return userWithoutHash as User; 
   }
 }

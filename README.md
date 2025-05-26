@@ -154,3 +154,6 @@ Si deseas contribuir a este proyecto, por favor, haz un "fork" del repositorio, 
 Este proyecto está bajo la licencia [MIT](https://opensource.org/licenses/MIT).
 
 ---
+
+## 👩‍💻 Autor
+- Desarrollado por Arianna Madrid
