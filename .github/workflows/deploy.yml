@@ -30,7 +30,7 @@ jobs:
 
     - name: Decode Google Cloud credentials and authenticate
       env:
-        GCP_SA_KEY_BASE64: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_BASE64 }}
+        GCP_SA_KEY_BASE64: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
       run: |
         echo "$GCP_SA_KEY_BASE64" | base64 --decode > /tmp/gcp_sa_key.json
 
