@@ -28,19 +28,6 @@ jobs:
     
       run: cd functions && npm run build
 
-    # - name: Decode Google Cloud credentials and authenticate
-    #   env:
-    #     GCP_SA_KEY_BASE64: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
-    #   run: |
-    #     echo "$GCP_SA_KEY_BASE64" | base64 --decode | tr -d '\n' > /tmp/gcp_sa_key.json
-    #     ls -l /tmp/gcp_sa_key.json
-
-    # - name: Show first 5 lines of decoded JSON key (TEMPORAL - REMOVER DESPUÉS)
-    #   run: |
-    #     echo "Primeras líneas de la clave JSON decodificada (¡NO COMPARTIR!):"
-    #     cat /tmp/gcp_sa_key.json
-    #     echo "FIN DE LA CLAVE JSON."
-
     - name: Authenticate to Google Cloud
       uses: google-github-actions/auth@v1
       with:
