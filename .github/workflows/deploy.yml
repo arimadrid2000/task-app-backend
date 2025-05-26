@@ -28,10 +28,16 @@ jobs:
     
       run: cd functions && npm run build
 
-    - name: Set up Google Cloud credentials
+    - name: Decode Google Cloud credentials and authenticate
+      env:
+        GCP_SA_KEY_BASE64: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_BASE64 }}
+      run: |
+        echo "$GCP_SA_KEY_BASE64" | base64 --decode > /tmp/gcp_sa_key.json
+
+    - name: Authenticate to Google Cloud
       uses: google-github-actions/auth@v1
       with:
-        credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+        credentials_json: "$(cat /tmp/gcp_sa_key.json)"
 
     - name: Install Firebase CLI
       run: npm install -g firebase-tools
