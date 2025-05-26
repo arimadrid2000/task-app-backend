@@ -11,7 +11,7 @@ export class FirebaseUserRepository implements IUserRepository {
   constructor(private db: Firestore) {}
 
   async findByEmail(email: string): Promise<User | null> {
-      const usersRef = this.db.collection("users");
+    const usersRef = this.db.collection("users");
     const snapshot = await usersRef.where("email", "==", email).limit(1).get();
 
     if (snapshot.empty) {
@@ -22,26 +22,23 @@ export class FirebaseUserRepository implements IUserRepository {
     const userData = snapshot.docs[0].data();
     const userId = snapshot.docs[0].id;
 
-    
     if (userData.createdAt instanceof Timestamp) {
       userData.createdAt = userData.createdAt.toDate();
     }
 
-    
-    const { hashedPassword, ...userWithoutHash } = userData; 
+    const { hashedPassword, ...userWithoutHash } = userData;
     return {id: userId, ...userWithoutHash} as User;
   }
 
   async create(user: Omit<User, 'id'>): Promise<User> {
-    const newUserId = uuidv4(); 
-    const newUserWithId: User = {id: newUserId, ...user, createdAt: new Date()}; 
+    const newUserId = uuidv4();
+    const newUserWithId: User = {id: newUserId, ...user, createdAt: new Date()};
 
-    console.log(newUserWithId)
+    console.log(newUserWithId);
     const userRef = this.db.collection("users").doc(newUserId);
-    await userRef.set(newUserWithId); 
+    await userRef.set(newUserWithId);
 
-    
     const { ...userWithoutHash } = newUserWithId;
-    return userWithoutHash as User; 
+    return userWithoutHash as User;
   }
 }
