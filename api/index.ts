@@ -1,8 +1,8 @@
 import express from "express";
 import cors from "cors";
 import * as admin from "firebase-admin"; 
-import userRoutes from "./routes/user.routes";
-import taskRoutes, { authenticateToken } from "./routes/task.routes";
+import userRoutes from "./routes/user.routes.js";
+import taskRoutes, { authenticateToken } from "./routes/task.routes.js";
 import { FirebaseUserRepository } from "./repositories/user.repository";
 import { FirebaseTaskRepository } from "./repositories/task.reposiroty"; 
 import { AuthService } from "./services/auth.service";
