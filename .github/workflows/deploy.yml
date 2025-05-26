@@ -37,8 +37,8 @@ jobs:
     - name: Show first 5 lines of decoded JSON key (TEMPORAL - REMOVER DESPUÉS)
       run: |
         echo "Primeras líneas de la clave JSON decodificada (¡NO COMPARTIR!):"
-        head -n 5 /tmp/gcp_sa_key.json
-        echo "..."
+        cat /tmp/gcp_sa_key.json
+        echo "FIN DE LA CLAVE JSON."
 
     - name: Authenticate to Google Cloud
       uses: google-github-actions/auth@v1
