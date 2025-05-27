@@ -49,4 +49,10 @@ app.get('/api/status', (req, res) => {
   res.status(200).json({ message: 'Backend is running on Vercel!', timestamp: new Date().toISOString() });
 });
 
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Backend Express listening on port ${PORT}`);
+});
+
+
 module.exports = app;
