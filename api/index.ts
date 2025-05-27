@@ -1,8 +1,8 @@
 import express from "express";
 import cors from "cors";
 import * as admin from "firebase-admin"; 
-import userRoutes from "./routes/user.routes.js";
-import taskRoutes, { authenticateToken } from "./routes/task.routes.js";
+import userRoutes from "./routes/user.routes";
+import taskRoutes, { authenticateToken } from "./routes/task.routes";
 import { FirebaseUserRepository } from "./repositories/user.repository";
 import { FirebaseTaskRepository } from "./repositories/task.reposiroty"; 
 import { AuthService } from "./services/auth.service";
@@ -48,5 +48,11 @@ app.use("/tasks", authenticateToken(authService), taskRoutes(taskService, authSe
 app.get('/api/status', (req, res) => {
   res.status(200).json({ message: 'Backend is running on Vercel!', timestamp: new Date().toISOString() });
 });
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Backend Express listening on port ${PORT}`);
+});
+
 
 module.exports = app;

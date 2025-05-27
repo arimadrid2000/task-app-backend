@@ -1,2 +1,6 @@
-functions/
 index.ts
+node_modules/
+.env
+functions/
+firebase-debug.log
+*.local
